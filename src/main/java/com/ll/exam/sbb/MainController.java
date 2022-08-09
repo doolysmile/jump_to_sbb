@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -95,12 +96,31 @@ public class MainController {
     @ResponseBody
     public String showMbti(@PathVariable String name) {
         return switch (name) {
-            case "홍길동" -> {
-                yield "INFP";
+            case "홍길순" -> {
+                char j = 'J';
+                yield "INF" + j;
             }
             case "임꺽정" -> "ENFP";
-            case "장희성", "홍길순" -> "INFP";
+            case "장희성", "홍길동" -> "INFP";
             default -> "모름";
         };
+    }
+
+    @GetMapping("/saveSession/{name}/{value}")
+    @ResponseBody
+    public String saveSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+
+        session.setAttribute(name, value);
+
+        return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
+    }
+
+    @GetMapping("/getSession/{name}")
+    @ResponseBody
+    public String getSession(@PathVariable String name, HttpSession session) {
+        String value = (String) session.getAttribute(name);
+
+        return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
     }
 }
