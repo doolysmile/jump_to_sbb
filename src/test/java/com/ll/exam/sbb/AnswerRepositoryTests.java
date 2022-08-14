@@ -24,9 +24,7 @@ public class AnswerRepositoryTests {
     private void clearData() {
         QuestionRepositoryTests.clearData(questionRepository);
 
-        questionRepository.disableForeignKeyChecks();
-        answerRepository.truncate();
-        questionRepository.enableForeignKeyChecks();
+        answerRepository.truncateTable();
     }
 
     private void createSampleData() {
@@ -43,4 +41,5 @@ public class AnswerRepositoryTests {
         a.setCreateDate(LocalDateTime.now());
         answerRepository.save(a);
     }
+
 }
