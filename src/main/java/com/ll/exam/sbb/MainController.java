@@ -209,6 +209,11 @@ public class MainController {
     Person addPerson(Person p) {
         return p;
     }
+
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/question/list";
+    }
 }
 
 @AllArgsConstructor
