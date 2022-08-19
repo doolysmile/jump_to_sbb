@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@RequestMapping("/question")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
 
-    @RequestMapping("/question/list")
+    @RequestMapping("/list")
     public String list(Model model) {
         List<Question> questionList = questionService.getList();
 
@@ -24,7 +25,7 @@ public class QuestionController {
         return "question_list";
     }
 
-    @RequestMapping("/question/detail/{id}")
+    @RequestMapping("/detail/{id}")
     public String detail(Model model, @PathVariable int id) {
         Question question = questionService.getQuestion(id);
 
