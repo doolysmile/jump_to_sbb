@@ -3,9 +3,7 @@ package com.ll.exam.sbb.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,33 @@ public class QuestionController {
         model.addAttribute("question", question);
 
         return "question_detail";
+    }
+
+    @GetMapping("/create")
+    public String questionCreate() {
+        return "question_form";
+    }
+
+    @PostMapping("/create")
+    public String questionCreate(Model model, QuestionFrom questionFrom) {
+        boolean hasError = false;
+
+        if (questionFrom.getSubject() == null || questionFrom.getSubject().trim().length() == 0) {
+            model.addAttribute("subjectErrorMsg", "제목 좀...");
+            hasError = true;
+        }
+
+        if (questionFrom.getContent() == null || questionFrom.getContent().trim().length() == 0) {
+            model.addAttribute("contentErrorMsg", "내용 좀...");
+            hasError = true;
+        }
+
+        if (hasError) {
+            model.addAttribute("questionFrom", questionFrom);
+            return "question_form";
+        }
+
+        questionService.create(questionFrom.getSubject(), questionFrom.getContent());
+        return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
     }
 }
